@@ -3,21 +3,28 @@
   <title>Pathfield Example</title>
   <sly data-sly-call="${clientLib.all @ categories='granite.ui.coral.foundation'}"/>
 </head>
-<body class="coral--light">
-  <h2>Pick a path</h2>
+<body class="coral--light coral-Form coral-Form--vertical">
+  <h2>Select a Path</h2>
 
-  <coral-pathfield
-      class="coral-Form-field"
-      name="pagePath"
-      placeholder="Select a page"
-      rootpath="/content">
-  </coral-pathfield>
+  <!-- ✅ This is the correct way to render a Pathfield in AEM 6.5 -->
+  <sly
+    data-sly-resource="${'pathfield' @
+      resourceType='granite/ui/components/coral/foundation/form/pathfield',
+      name='./pagePath',
+      fieldLabel='Select a Page',
+      rootPath='/content',
+      required=true
+    }"
+  ></sly>
+
+  <button id="getValue" class="coral-Button coral-Button--primary">Get Value</button>
 
   <script>
     Coral.commons.ready(function() {
-      const pathField = document.querySelector('coral-pathfield');
-      pathField.on('change', function() {
-        console.log('Selected Path:', pathField.value);
+      const field = document.querySelector('[name="./pagePath"]');
+      document.querySelector('#getValue').addEventListener('click', () => {
+        console.log('Selected Path:', field.value);
+        alert('Selected Path: ' + field.value);
       });
     });
   </script>
